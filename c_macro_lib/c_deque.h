@@ -30,7 +30,10 @@
   TYPENAME##_ec_t TYPENAME##_push_front(TYPENAME *deque, TYPE *data);                                                  \
   void TYPENAME##_clear(TYPENAME *deque);                                                                              \
   int TYPENAME##_size(TYPENAME *deque);                                                                                \
-  int TYPENAME##_max_size(TYPENAME *deque);
+  int TYPENAME##_max_size(TYPENAME *deque);                                                                            \
+  int TYPENAME##_push_back_overwrite(TYPENAME *deque, const TYPE *data);                                               \
+  int TYPENAME##_push_front_overwrite(TYPENAME *deque, const TYPE *data);                                              \
+                                                                                                                       
 
 #define DEQUE_CREATE_IMPLEMENTATION(TYPENAME, TYPE, MAXSIZE)                                                           \
   int TYPENAME##_internal_prev_pos(int pos)                                                                            \
@@ -114,7 +117,37 @@
   int TYPENAME##_max_size(TYPENAME *deque)                                                                             \
   {                                                                                                                    \
     return ((sizeof(deque->data_) - sizeof(deque->data_[0])) / sizeof(deque->data_[0]));                               \
-  }
+  }                                                                                                                    \
+  int TYPENAME##_push_back_overwrite(TYPENAME *deque, const TYPE *data)                                                \
+  {                                                                                                                    \
+    int overwritten = 0;                                                                                               \
+                                                                                                                       \
+    if (deque->_head == TYPENAME##_internal_next_pos(deque->_tail))                                                    \
+    {                                                                                                                  \
+      deque->_head = TYPENAME##_internal_next_pos(deque->_head);                                                       \
+      overwritten = 1;                                                                                                 \
+    }                                                                                                                  \
+                                                                                                                       \
+    deque->data_[deque->_tail] = *data;                                                                                \
+    deque->_tail = TYPENAME##_internal_next_pos(deque->_tail);                                                         \
+                                                                                                                       \
+    return overwritten;                                                                                                \
+  }                                                                                                                    \
+  int TYPENAME##_push_front_overwrite(TYPENAME *deque, const TYPE *data)                                               \
+  {                                                                                                                    \
+    int overwritten = 0;                                                                                               \
+                                                                                                                       \
+    if (deque->_head == TYPENAME##_internal_next_pos(deque->_tail))                                                    \
+    {                                                                                                                  \
+      deque->_tail = TYPENAME##_internal_prev_pos(deque->_tail);                                                       \
+      overwritten = 1;                                                                                                 \
+    }                                                                                                                  \
+                                                                                                                       \
+    deque->_head = TYPENAME##_internal_prev_pos(deque->_head);                                                         \
+    deque->data_[deque->_head] = *data;                                                                                \
+                                                                                                                       \
+    return overwritten;                                                                                                \
+  }                                                                                                                    \
 
 #define DEQUE_CREATE_TYPE(TYPENAME, TYPE, MAXSIZE)                                                                     \
   DEQUE_CREATE_HEADER(TYPENAME, TYPE, MAXSIZE)                                                                         \

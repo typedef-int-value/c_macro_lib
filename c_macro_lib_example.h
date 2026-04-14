@@ -43,28 +43,58 @@ int c_deque_example()
   assert(ec == u8_deque_type_ec_data_is_full);
   assert(size == 3);
 
-  /* deque has 3, 2, 1. */
+  /* deque has 4, 3, 2. because deque max size is 3. */
+  int overflow = u8_deque_type_push_front_overwrite(&deq, &value);
+  size = u8_deque_type_size(&deq);
+  assert(size == 3);
+
+  /* deque has 4, 3, 2. */
   uint8_t front_value = 0;
   ec = u8_deque_type_front(&deq, &front_value);
   uint8_t back_value = 0;
   ec = u8_deque_type_back(&deq, &back_value);
+  assert(front_value == 4);
+
+  /* deque has 3, 2, 2. because deque max size is 3. */
+  value = 2;
+  overflow = u8_deque_type_push_back_overwrite(&deq, &value);
+  size = u8_deque_type_size(&deq);
+  assert(size == 3);
+
+  /* deque has 3, 2, 2. */
+  size = u8_deque_type_size(&deq);
+  u8_deque_type_back(&deq, &back_value);
+  assert(back_value == 2);
+  assert(size == 3);
+
+  /* deque has 3, 2. */
+  u8_deque_type_pop_back(&deq);
+  size = u8_deque_type_size(&deq);
+  ec = u8_deque_type_back(&deq, &back_value);
+  ec = u8_deque_type_front(&deq, &front_value);
+  assert(back_value == 2);
   assert(front_value == 3);
+  assert(size == 2);
 
-  /* deque has 2, 1. */
+  /* deque has 2. */
   u8_deque_type_pop_front(&deq);
+  size = u8_deque_type_size(&deq);
+  ec = u8_deque_type_back(&deq, &back_value);
   ec = u8_deque_type_front(&deq, &front_value);
+  assert(back_value == 2);
   assert(front_value == 2);
+  assert(size == 1);
 
-  /* deque has 1. */
-  u8_deque_type_pop_front(&deq);
-  ec = u8_deque_type_front(&deq, &front_value);
-  assert(front_value == 1);
-
-  /* deque is empty. */
+  /* deque has empty. */
   u8_deque_type_pop_front(&deq);
   ec = u8_deque_type_front(&deq, &front_value);
   assert(ec == u8_deque_type_ec_data_is_empty);
-  assert(front_value == 1);
+
+  /* deque is empty. front_value keep 2. */
+  u8_deque_type_pop_front(&deq);
+  ec = u8_deque_type_front(&deq, &front_value);
+  assert(ec == u8_deque_type_ec_data_is_empty);
+  assert(front_value == 2);
 
   /* deque is empty. */
   u8_deque_type_pop_front(&deq);
