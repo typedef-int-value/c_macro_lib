@@ -34,8 +34,8 @@
   void TYPENAME##_clear(TYPENAME *deque);                                                                              \
   int TYPENAME##_size(TYPENAME *deque);                                                                                \
   int TYPENAME##_max_size(TYPENAME *deque);                                                                            \
-  int TYPENAME##_push_back_overwrite(TYPENAME *deque, const TYPE *data);                                               \
-  int TYPENAME##_push_front_overwrite(TYPENAME *deque, const TYPE *data);                                              \
+  _Bool TYPENAME##_push_back_overwrite(TYPENAME *deque, const TYPE *data);                                               \
+  _Bool TYPENAME##_push_front_overwrite(TYPENAME *deque, const TYPE *data);                                              \
                                                                                                                        
 /**********************************************************************************************************************
  *  IMPLEMENTATION
@@ -124,7 +124,7 @@
   {                                                                                                                    \
     return ((sizeof(deque->data_) - sizeof(deque->data_[0])) / sizeof(deque->data_[0]));                               \
   }                                                                                                                    \
-  int TYPENAME##_push_back_overwrite(TYPENAME *deque, const TYPE *data)                                                \
+  _Bool TYPENAME##_push_back_overwrite(TYPENAME *deque, const TYPE *data)                                                \
   {                                                                                                                    \
     int overwritten = 0;                                                                                               \
                                                                                                                        \
@@ -139,7 +139,7 @@
                                                                                                                        \
     return overwritten;                                                                                                \
   }                                                                                                                    \
-  int TYPENAME##_push_front_overwrite(TYPENAME *deque, const TYPE *data)                                               \
+  _Bool TYPENAME##_push_front_overwrite(TYPENAME *deque, const TYPE *data)                                               \
   {                                                                                                                    \
     int overwritten = 0;                                                                                               \
                                                                                                                        \
