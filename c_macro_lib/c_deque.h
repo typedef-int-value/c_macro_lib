@@ -5,6 +5,9 @@
  */
 #pragma once
 
+/**********************************************************************************************************************
+ *  HEADER
+ *********************************************************************************************************************/
 #define DEQUE_CREATE_HEADER(TYPENAME, TYPE, MAXSIZE)                                                                   \
   typedef enum                                                                                                         \
   {                                                                                                                    \
@@ -34,6 +37,9 @@
   int TYPENAME##_push_back_overwrite(TYPENAME *deque, const TYPE *data);                                               \
   int TYPENAME##_push_front_overwrite(TYPENAME *deque, const TYPE *data);                                              \
                                                                                                                        
+/**********************************************************************************************************************
+ *  IMPLEMENTATION
+ *********************************************************************************************************************/
 
 #define DEQUE_CREATE_IMPLEMENTATION(TYPENAME, TYPE, MAXSIZE)                                                           \
   int TYPENAME##_internal_prev_pos(int pos)                                                                            \
@@ -148,6 +154,30 @@
                                                                                                                        \
     return overwritten;                                                                                                \
   }                                                                                                                    \
+  void TYPENAME##_for_each(TYPENAME *deque, void (*fn)(TYPE *))                                                        \
+  {                                                                                                                    \
+    int pos = deque->_head;                                                                                            \
+                                                                                                                       \
+    while (pos != deque->_tail)                                                                                        \
+    {                                                                                                                  \
+      fn(&deque->data_[pos]);                                                                                          \
+      pos = TYPENAME##_internal_next_pos(pos);                                                                         \
+    }                                                                                                                  \
+  }                                                                                                                    \
+void TYPENAME##_for_each_reverse(TYPENAME *deque, void (*fn)(TYPE *))                                                  \
+{                                                                                                                      \
+  int pos = deque->_tail;                                                                                              \
+                                                                                                                       \
+  while (pos != deque->_head)                                                                                          \
+  {                                                                                                                    \
+    pos = TYPENAME##_internal_prev_pos(pos);                                                                           \
+    fn(&deque->data_[pos]);                                                                                            \
+  }                                                                                                                    \
+}                                                                                                                      \
+
+/**********************************************************************************************************************
+ *  GLOBAL FUNCTIONS
+ *********************************************************************************************************************/
 
 #define DEQUE_CREATE_TYPE(TYPENAME, TYPE, MAXSIZE)                                                                     \
   DEQUE_CREATE_HEADER(TYPENAME, TYPE, MAXSIZE)                                                                         \

@@ -1,11 +1,18 @@
 #pragma once
 #include <assert.h>
 #include <stdint.h>
+#include <stdio.h>
+
 #include "c_macro_lib/c_deque.h"
 
 DEQUE_CREATE_TYPE(u8_deque_type, uint8_t, 3) // declare header and implementation in c
 // DEQUE_CREATE_HEADER(u8_deque_type, uint8_t, 3)          // or can declare only header for .h file
 // DEQUE_CREATE_IMPLEMENTATION(u8_deque_type, uint8_t, 3)  // and implementation for .c(cpp) file
+
+void print_u8(uint8_t *value)
+{
+  printf("%d, ", *value);
+}
 
 int c_deque_example()
 {
@@ -66,6 +73,10 @@ int c_deque_example()
   u8_deque_type_back(&deq, &back_value);
   assert(back_value == 2);
   assert(size == 3);
+  printf("foreach: ");
+  u8_deque_type_for_each(&deq, print_u8);
+  printf("\nfor_each_reverse: ");
+  u8_deque_type_for_each_reverse(&deq, print_u8);
 
   /* deque has 3, 2. */
   u8_deque_type_pop_back(&deq);
