@@ -77,6 +77,7 @@ int c_deque_example()
   u8_deque_type_for_each(&deq, print_u8);
   printf("\nfor_each_reverse: ");
   u8_deque_type_for_each_reverse(&deq, print_u8);
+  uint8_t *at_value = u8_deque_type_at(&deq, 0);
 
   /* deque has 3, 2. */
   u8_deque_type_pop_back(&deq);

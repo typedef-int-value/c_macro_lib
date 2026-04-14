@@ -174,6 +174,15 @@ void TYPENAME##_for_each_reverse(TYPENAME *deque, void (*fn)(TYPE *))           
     fn(&deque->data_[pos]);                                                                                            \
   }                                                                                                                    \
 }                                                                                                                      \
+TYPE *TYPENAME##_at(TYPENAME *deque, int index)                                                                        \
+{                                                                                                                      \
+  int size = TYPENAME##_size(deque);                                                                                   \
+  if (index < 0 || index >= size)                                                                                      \
+    return NULL;                                                                                                       \
+                                                                                                                       \
+  int pos = (deque->_head + index) % (MAXSIZE + 1);                                                                    \
+  return &deque->data_[pos];                                                                                           \
+}                                                                                                                      \
 
 /**********************************************************************************************************************
  *  GLOBAL FUNCTIONS
