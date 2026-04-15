@@ -34,9 +34,12 @@
   void TYPENAME##_clear(TYPENAME *deque);                                                                              \
   int TYPENAME##_size(TYPENAME *deque);                                                                                \
   int TYPENAME##_max_size(TYPENAME *deque);                                                                            \
-  _Bool TYPENAME##_push_back_overwrite(TYPENAME *deque, const TYPE *data);                                               \
-  _Bool TYPENAME##_push_front_overwrite(TYPENAME *deque, const TYPE *data);                                              \
-                                                                                                                       
+  _Bool TYPENAME##_push_back_overwrite(TYPENAME *deque, const TYPE *data);                                             \
+  _Bool TYPENAME##_push_front_overwrite(TYPENAME *deque, const TYPE *data);                                            \
+  void TYPENAME##_for_each(TYPENAME *deque, void (*fn)(TYPE *)) ;                                                      \
+  void TYPENAME##_for_each_reverse(TYPENAME *deque, void (*fn)(TYPE *));                                               \
+  TYPE *TYPENAME##_at(TYPENAME *deque, int index);                                                                     \
+
 /**********************************************************************************************************************
  *  IMPLEMENTATION
  *********************************************************************************************************************/
